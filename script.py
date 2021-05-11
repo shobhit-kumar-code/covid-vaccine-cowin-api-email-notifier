@@ -5,6 +5,7 @@ import time
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from datetime import date
 
 
 def send_email(text,emailid):
@@ -28,12 +29,19 @@ def send_email(text,emailid):
 
 
 def notifier(prev_email):
+    today = date.today()
+    todays_date = today.strftime("%d-%m-%Y")
     string_to_email = ""
     toaster = ToastNotifier()
-    district_id = [294,265,276]
+    #############################################
+    district_id = [294,265,276]  # SELECT THE DISTRICT IDS THAT ARE REQUIRED BY YOU
+                                 # OPEN THIS IN A BROWSER TO GET YOUR STATE ID https://cdn-api.co-vin.in/api/v2/admin/location/states
+                                 # OPEN THIS IN A BROWSER USING THE STATE ID ABOVE TO GET THE DISTRICT IT
+                                 # https://cdn-api.co-vin.in/api/v2/admin/location/districts/<STATE_ID>
+    ############################################
     header = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}#,'accept': 'application/json'}
     for dist in district_id:
-        x = requests.get("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id="+str(dist)+"&date=11-05-2021",headers=header)
+        x = requests.get("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id="+str(dist)+"&date="+todays_date,headers=header)
         data = json.loads(x.text)
         for center in data["centers"]:
             flag=0
