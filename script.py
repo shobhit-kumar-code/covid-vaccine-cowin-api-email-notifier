@@ -73,7 +73,7 @@ def notifier(prev_email):
         print("empty")
         return "empty"
 
+prev_email="prev"
 for x in range(10):
-    prev_email="prev"
     prev_email = notifier(prev_email)
     time.sleep(500)
